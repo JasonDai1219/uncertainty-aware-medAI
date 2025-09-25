@@ -42,8 +42,7 @@ All figures are automatically saved under `reports/figures/`:
 - **cp_fn_coverage.png** → False negatives vs. α, comparing oracle expert and GPT proxy scenarios  
 - **cp_fn_gpt_measured_bootstrap.png** → FN reduction curve using GPT-measured sensitivity (bootstrap)
 
-Additional quantitative results (metrics, bootstrapped summaries, and CP trade-off tables)  
-are available directly inside the notebook (`03_conformal_prediction.ipynb`).
+Additional quantitative results of the study are available directly inside the notebook (`conformal_prediction.ipynb`).
 
 
 ## ⚠ Disclaimer

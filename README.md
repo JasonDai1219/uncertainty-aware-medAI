@@ -25,6 +25,7 @@ The easiest way to reproduce everything is to run the main notebook:
 
 ```bash
 notebooks/03_conformal_prediction.ipynb
+```
 
 ## ⚙️ Requirements
 ```bash

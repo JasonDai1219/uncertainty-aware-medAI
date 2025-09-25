@@ -30,17 +30,20 @@ notebooks/03_conformal_prediction.ipynb
 ```bash
 pip install -r requirements.txt
 ```
----
 
 ## 📊 Outputs / Results
 
-Figures will be saved automatically in reports/figures/, including:
-	•	baseline_confusion.png – baseline confusion matrix
-	•	baseline_calibration.png – calibration curve showing uncertainty zone
-	•	cp_fn_coverage.png – false negatives vs alpha under oracle and GPT proxy
-	•	cp_fn_gpt_measured_bootstrap.png – FN reduction curve using GPT-measured sensitivity
+## 📊 Outputs / Results
 
-Study Results are inside the notebook.
+All figures are automatically saved under `reports/figures/`:
+
+- **baseline_confusion.png** → Confusion matrix of the logistic regression baseline  
+- **baseline_calibration.png** → Calibration curve highlighting the uncertain zone  
+- **cp_fn_coverage.png** → False negatives vs. α, comparing oracle expert and GPT proxy scenarios  
+- **cp_fn_gpt_measured_bootstrap.png** → FN reduction curve using GPT-measured sensitivity (bootstrap)
+
+Additional quantitative results (metrics, bootstrapped summaries, and CP trade-off tables)  
+are available directly inside the notebook (`03_conformal_prediction.ipynb`).
 
 
 ## ⚠ Disclaimer

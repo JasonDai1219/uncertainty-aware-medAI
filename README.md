@@ -24,7 +24,8 @@ This project explores the limitations of using **accuracy as the sole evaluation
 The easiest way to reproduce everything is to run the main notebook:
 
 ```bash
-notebooks/03_conformal_prediction.ipynb
+git clone https://github.com/JasonDai1219/uncertainty-aware-medAI.git
+cd uncertainty-aware-medAI/notebooks/conformal_prediction.ipynb
 ```
 
 ## ⚙️ Requirements

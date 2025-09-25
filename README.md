@@ -29,6 +29,7 @@ notebooks/03_conformal_prediction.ipynb
 ## ⚙️ Requirements
 ```bash
 pip install -r requirements.txt
+---
 
 ## 📊 Outputs / Results
 

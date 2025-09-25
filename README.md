@@ -51,5 +51,4 @@ This is a research prototype, not a clinical tool. The GPT proxy is used only as
 
 
 ## 📜 License
-MIT License
-Copyright (c) 2025 Ruizhe (Jason) Dai
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

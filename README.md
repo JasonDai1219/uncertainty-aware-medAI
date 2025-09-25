@@ -33,8 +33,6 @@ pip install -r requirements.txt
 
 ## 📊 Outputs / Results
 
-## 📊 Outputs / Results
-
 All figures are automatically saved under `reports/figures/`:
 
 - **baseline_confusion.png** → Confusion matrix of the logistic regression baseline  

@@ -1,9 +1,12 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import List, Dict, Tuple, Optional
+from src.evaluation.metrics import confusion_from_preds, sensitivity_specificity
+from src.evaluation.metrics import confusion_from_preds, sensitivity_specificity
 import json, time, random
 import numpy as np
 import pandas as pd
+from tqdm.auto import trange
 
 FEATURE_DOC = {
     "age": "Age (years)",
@@ -105,3 +108,54 @@ def stratified_sample_U(df_u: pd.DataFrame, label_col: str = "glaucoma", n_per_c
     dev_u = pd.concat(dev_parts).sample(frac=1.0, random_state=seed).reset_index(drop=True)
     test_u = pd.concat(remain_parts).sample(frac=1.0, random_state=seed).reset_index(drop=True)
     return dev_u, test_u
+
+
+def gpt_multiple_runs(client, model_name: str, test_u: pd.DataFrame, fewshot_block: str, n_runs: int = 5, temperature: float = 0.3):
+    case_cards = [format_case_row(r) for _, r in test_u.iterrows()]
+    all_preds = []
+    for _ in trange(n_runs, desc="GPT runs"):
+        gpt_out = call_gpt_batch(client, model=model_name, cases=case_cards,
+                                 fewshot_block=fewshot_block, temperature=temperature)
+        preds = []
+        for item in gpt_out:
+            try:
+                preds.append(int(item["prediction"]))
+            except Exception:
+                preds.append(None)
+        all_preds.append(preds)
+    return np.array(all_preds, dtype=object)
+
+
+def evaluate_gpt_runs(all_preds: np.ndarray, y_true) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    y_true = np.asarray(y_true).astype(int)
+    mask_valid = ~np.any(all_preds == None, axis=0) 
+    y_true_eval = y_true[mask_valid]
+    preds_eval = np.asarray(all_preds[:, mask_valid], dtype=int)
+
+    s_list = []
+    for r in preds_eval:
+        cm = confusion_from_preds(y_true_eval, r)
+        s, _ = sensitivity_specificity(cm)
+        s_list.append(s)
+    return np.asarray(s_list), y_true_eval, preds_eval
+
+
+def bootstrap_sensitivity_ci(preds_eval: np.ndarray, y_true_eval: np.ndarray, n_boot: int = 1000, alpha: float = 0.05, random_state: int = 42):
+    rng = np.random.default_rng(random_state)
+    n = len(y_true_eval)
+    s_boot = []
+    for _ in range(n_boot):
+        idx = rng.integers(0, n, size=n)
+        y_b = y_true_eval[idx]
+        pred_b = (preds_eval[:, idx].mean(axis=0) >= 0.5).astype(int)
+        cm = confusion_from_preds(y_b, pred_b)
+        s, _ = sensitivity_specificity(cm)
+        s_boot.append(s)
+
+    low, high = alpha / 2, 1 - alpha / 2
+    return (float(np.nanpercentile(s_boot, low * 100)),
+            float(np.nanpercentile(s_boot, high * 100)))
+
+
+def new_fn_after_deferral(FN_confident: int, U_pos: int, s: float) -> float:
+    return FN_confident + (1.0 - s) * U_pos

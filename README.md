@@ -7,15 +7,15 @@ This project explores the limitations of using **accuracy as the sole evaluation
 ## 📂 Project Structure
 
 - `notebooks/`
-  - `03_conformal_prediction.ipynb` → main notebook for running experiments and reproducing results
+  - `conformal_prediction.ipynb` → main notebook for running experiments and reproducing results
 - `src/`
   - `data/` → preprocessing, dataset splitting, inspection
   - `models/` → baseline logistic regression, CP routines, expert integration
   - `visualization/` → plotting utilities for calibration, probability distributions, CP results
 - `reports/figures/` → all generated plots
 - `data/`
-  - `raw/` → expected raw data (`ds_whole.csv`)
-  - `processed/` → train / calibration / test splits (auto-generated)
+  - `raw/` → raw_dataset
+  - `processed/` → train / calibration / test splits
 
 ---
 
